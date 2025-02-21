@@ -6,7 +6,7 @@ const cors = require('cors');
 const app = express();
 
 // ✅ Configure CORS to allow only your frontend
-const allowedOrigins = ["https://luxcare-frontend.onrender.com"];
+const allowedOrigins = ["https://luxcare-cleaning-backend.onrender.com"];
 app.use(cors({
     origin: allowedOrigins,
     methods: "GET,POST",
