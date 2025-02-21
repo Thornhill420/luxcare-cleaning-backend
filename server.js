@@ -4,7 +4,15 @@ const nodemailer = require('nodemailer');
 const cors = require('cors');
 
 const app = express();
-app.use(cors());
+
+// ✅ Configure CORS to allow only your frontend
+const allowedOrigins = ["https://luxcare-frontend.onrender.com"];
+app.use(cors({
+    origin: allowedOrigins,
+    methods: "GET,POST",
+    allowedHeaders: "Content-Type"
+}));
+
 app.use(express.json());
 
 const transporter = nodemailer.createTransport({
