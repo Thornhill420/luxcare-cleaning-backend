@@ -62,14 +62,14 @@ app.post('/book-service', async (req, res) => {
         from: process.env.EMAIL_USER,
         to: process.env.EMAIL_USER,
         subject: "New Booking Request",
-        text: `New cleaning service booking:
-        Name: ${name}
-        Email: ${email}
-        Phone: ${phone}
-        Selected Service: ${service}
-        Preferred Date: ${date}
-        Preferred Time: ${time}
-        Address: ${address}
+        text: `New cleaning service booking:\n
+        Name: ${name}\n
+        Email: ${email}\n
+        Phone: ${phone}\n
+        Selected Service: ${service}\n
+        Preferred Date: ${date}\n
+        Preferred Time: ${time}\n
+        Address: ${address}\n
         Special Notes: ${notes || "No additional notes provided."}`
     };
 
@@ -83,5 +83,5 @@ app.post('/book-service', async (req, res) => {
     }
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 10000;
 app.listen(PORT, "0.0.0.0", () => console.log(`Backend running on port ${PORT}`));
