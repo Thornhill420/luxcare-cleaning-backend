@@ -15,47 +15,59 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-// Contact form email route
+// ✅ Contact Form Email Route
 app.post('/send-email', async (req, res) => {
+    console.log("Received contact form request:", req.body); // Debugging
+
     const { name, email, message } = req.body;
+    if (!name || !email || !message) {
+        return res.status(400).json({ error: 'All fields are required' });
+    }
 
     const mailOptions = {
-        from: email,
+        from: process.env.EMAIL_USER,
         to: process.env.EMAIL_USER,
         subject: "New Contact Form Message",
         text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`
     };
 
     try {
-        await transporter.sendMail(mailOptions);
+        const info = await transporter.sendMail(mailOptions);
+        console.log("Contact email sent:", info.response); // Debugging
         res.status(200).json({ message: 'Email sent successfully!' });
     } catch (error) {
-        console.error("Error sending email:", error);
+        console.error("Error sending contact email:", error);
         res.status(500).json({ error: 'Failed to send email.' });
     }
 });
 
-// Booking form email route
+// ✅ Booking Form Email Route
 app.post('/book-service', async (req, res) => {
+    console.log("Received booking request:", req.body); // Debugging
+
     const { name, email, phone, service, date, time, address, notes } = req.body;
+    if (!name || !email || !phone || !service || !date || !time || !address) {
+        return res.status(400).json({ error: 'All fields except notes are required' });
+    }
 
     const mailOptions = {
-        from: email,
+        from: process.env.EMAIL_USER,
         to: process.env.EMAIL_USER,
         subject: "New Booking Request",
-        text: `New cleaning service booking:        
-        Name: ${name || "Not provided"}
-        Email: ${email || "Not provided"}
-        Phone: ${phone || "Not provided"}
-        Selected Service: ${service || "Not provided"}
-        Preferred Date: ${date || "Not provided"}
-        Preferred Time: ${time || "Not provided"}
-        Address: ${address || "Not provided"}
+        text: `New cleaning service booking:
+        Name: ${name}
+        Email: ${email}
+        Phone: ${phone}
+        Selected Service: ${service}
+        Preferred Date: ${date}
+        Preferred Time: ${time}
+        Address: ${address}
         Special Notes: ${notes || "No additional notes provided."}`
     };
 
     try {
-        await transporter.sendMail(mailOptions);
+        const info = await transporter.sendMail(mailOptions);
+        console.log("Booking email sent:", info.response); // Debugging
         res.status(200).json({ message: 'Booking request sent successfully!' });
     } catch (error) {
         console.error("Error sending booking email:", error);
@@ -65,4 +77,3 @@ app.post('/book-service', async (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, "0.0.0.0", () => console.log(`Backend running on port ${PORT}`));
-
