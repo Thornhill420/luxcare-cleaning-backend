@@ -5,14 +5,20 @@ const cors = require('cors');
 
 const app = express();
 
-// ✅ Configure CORS to allow only your frontend
+// ✅ Configure CORS to allow only your frontend (GitHub Pages & backend)
 const allowedOrigins = [
-    "https://thornhill420.github.io/luxcare-cleaning/", // 🌟 Replace with your actual frontend URL
+    "https://thornhill420.github.io", // GitHub Pages root (handles all subpaths)
     "https://luxcare-cleaning-backend.onrender.com"
 ];
 
 app.use(cors({
-    origin: allowedOrigins,
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type"],
     credentials: true
@@ -33,7 +39,7 @@ const transporter = nodemailer.createTransport({
 
 // ✅ Contact Form Email Route
 app.post('/send-email', async (req, res) => {
-    console.log("📩 Received contact form request:", req.body);
+    console.log("Received contact form request:", req.body);
 
     const { name, email, message } = req.body;
 
@@ -45,7 +51,7 @@ app.post('/send-email', async (req, res) => {
     const mailOptions = {
         from: process.env.EMAIL_USER,
         to: process.env.EMAIL_USER,
-        subject: "📧 New Contact Form Message",
+        subject: "New Contact Form Message",
         text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`
     };
 
@@ -61,10 +67,9 @@ app.post('/send-email', async (req, res) => {
 
 // ✅ Booking Form Email Route
 app.post('/book-service', async (req, res) => {
-    console.log("📅 Received booking request:", req.body);
+    console.log("Received booking request:", req.body);
 
     const { name, email, phone, service, date, time, address, notes } = req.body;
-    
     if (!name || !email || !phone || !service || !date || !time || !address) {
         console.log("❌ Missing required fields!");
         return res.status(400).json({ error: 'All fields except notes are required' });
@@ -73,17 +78,16 @@ app.post('/book-service', async (req, res) => {
     const mailOptions = {
         from: process.env.EMAIL_USER,
         to: process.env.EMAIL_USER,
-        subject: "📝 New Booking Request",
-        text: `🧹 New cleaning service booking:
-        
-        📌 Name: ${name}
-        📧 Email: ${email}
-        📞 Phone: ${phone}
-        🏠 Address: ${address}
-        🏷️ Selected Service: ${service}
-        📅 Preferred Date: ${date}
-        ⏰ Preferred Time: ${time}
-        📝 Special Notes: ${notes || "No additional notes provided."}`
+        subject: "New Booking Request",
+        text: `New cleaning service booking:\n
+        Name: ${name}\n
+        Email: ${email}\n
+        Phone: ${phone}\n
+        Selected Service: ${service}\n
+        Preferred Date: ${date}\n
+        Preferred Time: ${time}\n
+        Address: ${address}\n
+        Special Notes: ${notes || "No additional notes provided."}`
     };
 
     try {
@@ -98,9 +102,9 @@ app.post('/book-service', async (req, res) => {
 
 // ✅ Default Route to Check Server Status
 app.get('/', (req, res) => {
-    res.send('🚀 LuxCare Cleaning Backend is Running!');
+    res.send('LuxCare Cleaning Backend is Running 🚀');
 });
 
 // ✅ Start Server
 const PORT = process.env.PORT || 10000;
-app.listen(PORT, "0.0.0.0", () => console.log(`✅ Backend running on port ${PORT}`));
+app.listen(PORT, "0.0.0.0", () => console.log(`Backend running on port ${PORT}`));
