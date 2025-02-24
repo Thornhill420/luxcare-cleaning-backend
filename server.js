@@ -7,7 +7,7 @@ const app = express();
 
 // ✅ Configure CORS to allow only your frontend
 const allowedOrigins = [
-    "https://luxcare-cleaning-frontend-url.com", // 🌟 Replace with your actual frontend URL
+    "https://thornhill420.github.io/luxcare-cleaning/", // 🌟 Replace with your actual frontend URL
     "https://luxcare-cleaning-backend.onrender.com"
 ];
 
