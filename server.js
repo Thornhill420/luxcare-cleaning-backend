@@ -7,7 +7,7 @@ const app = express();
 
 // ✅ Configure CORS to allow only your frontend (GitHub Pages & backend)
 const allowedOrigins = [
-    "https://thornhill420.github.io", // GitHub Pages root (handles all subpaths)
+    "https://luxcare.github.io", // GitHub Pages root (handles all subpaths)
     "https://luxcare-cleaning-backend.onrender.com"
 ];
 
